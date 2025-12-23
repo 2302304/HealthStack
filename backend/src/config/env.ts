@@ -8,12 +8,12 @@ export const config = {
   databaseUrl: process.env.DATABASE_URL!,
   jwt: {
     secret: process.env.JWT_SECRET!,
-    expiresIn: process.env.JWT_EXPIRES_IN || '7d',
+    expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as string,
   },
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   },
-} as const;
+};
 
 // Validate required environment variables
 const requiredEnvVars = ['DATABASE_URL', 'JWT_SECRET'];

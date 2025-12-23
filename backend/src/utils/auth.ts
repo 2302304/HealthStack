@@ -30,9 +30,11 @@ export async function comparePassword(
  * Generate a JWT token
  */
 export function generateToken(payload: JwtPayload): string {
-  return jwt.sign(payload, config.jwt.secret, {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const options: any = {
     expiresIn: config.jwt.expiresIn,
-  });
+  };
+  return jwt.sign(payload, config.jwt.secret, options);
 }
 
 /**
