@@ -1,0 +1,206 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model with authentication
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  foodLogs     FoodLog[]
+  exercises    Exercise[]
+  sleepLogs    SleepLog[]
+  moodLogs     MoodLog[]
+  mealPlans    MealPlan[]
+  shoppingLists ShoppingList[]
+
+  @@map("users")
+}
+
+// Food and Nutrition tracking
+model FoodLog {
+  id          String   @id @default(uuid())
+  userId      String
+  foodName    String
+  calories    Float
+  protein     Float?
+  carbs       Float?
+  fat         Float?
+  fiber       Float?
+  mealType    MealType
+  servingSize String?
+  notes       String?
+  loggedAt    DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("food_logs")
+  @@index([userId, loggedAt])
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+// Exercise tracking
+model Exercise {
+  id          String       @id @default(uuid())
+  userId      String
+  exerciseName String
+  exerciseType ExerciseType
+  duration    Int          // in minutes
+  calories    Float?
+  distance    Float?       // in kilometers
+  intensity   Intensity?
+  notes       String?
+  loggedAt    DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("exercises")
+  @@index([userId, loggedAt])
+}
+
+enum ExerciseType {
+  CARDIO
+  STRENGTH
+  FLEXIBILITY
+  SPORTS
+  OTHER
+}
+
+enum Intensity {
+  LOW
+  MODERATE
+  HIGH
+}
+
+// Sleep tracking
+model SleepLog {
+  id          String   @id @default(uuid())
+  userId      String
+  sleepStart  DateTime
+  sleepEnd    DateTime
+  duration    Float    // in hours
+  quality     Int      // 1-10 scale
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sleep_logs")
+  @@index([userId, sleepStart])
+}
+
+// Mood tracking
+model MoodLog {
+  id        String   @id @default(uuid())
+  userId    String
+  mood      Int      // 1-10 scale
+  energy    Int?     // 1-10 scale
+  stress    Int?     // 1-10 scale
+  notes     String?
+  loggedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("mood_logs")
+  @@index([userId, loggedAt])
+}
+
+// Meal planning
+model MealPlan {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  dietType    DietType?
+  targetCalories Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meals Meal[]
+
+  @@map("meal_plans")
+  @@index([userId, startDate])
+}
+
+enum DietType {
+  STANDARD
+  KETO
+  LOW_CARB
+  VEGETARIAN
+  VEGAN
+  PALEO
+}
+
+model Meal {
+  id          String   @id @default(uuid())
+  mealPlanId  String
+  name        String
+  mealType    MealType
+  dayOfWeek   Int      // 1-7 (Monday-Sunday)
+  calories    Float?
+  protein     Float?
+  carbs       Float?
+  fat         Float?
+  ingredients String[] // Array of ingredient descriptions
+  instructions String?
+  createdAt   DateTime @default(now())
+
+  mealPlan MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+
+  @@map("meals")
+  @@index([mealPlanId, dayOfWeek])
+}
+
+// Shopping lists
+model ShoppingList {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items ShoppingItem[]
+
+  @@map("shopping_lists")
+  @@index([userId])
+}
+
+model ShoppingItem {
+  id             String  @id @default(uuid())
+  shoppingListId String
+  name           String
+  quantity       String?
+  category       String?
+  checked        Boolean @default(false)
+
+  shoppingList ShoppingList @relation(fields: [shoppingListId], references: [id], onDelete: Cascade)
+
+  @@map("shopping_items")
+  @@index([shoppingListId])
+}
