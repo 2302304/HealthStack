@@ -1,0 +1,74 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: healthstack
+          POSTGRES_PASSWORD: healthstack
+          POSTGRES_DB: healthstack_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: npm ci
+
+    - name: Generate Prisma Client
+      working-directory: ./backend
+      run: npx prisma generate
+      env:
+        DATABASE_URL: postgresql://healthstack:healthstack@localhost:5432/healthstack_test
+
+    - name: Run Prisma migrations
+      working-directory: ./backend
+      run: npx prisma migrate deploy
+      env:
+        DATABASE_URL: postgresql://healthstack:healthstack@localhost:5432/healthstack_test
+
+    - name: Build TypeScript
+      working-directory: ./backend
+      run: npm run build
+
+    - name: Check TypeScript types
+      working-directory: ./backend
+      run: npx tsc --noEmit
+
+    # Uncomment when tests are added
+    # - name: Run tests
+    #   working-directory: ./backend
+    #   run: npm test
+    #   env:
+    #     DATABASE_URL: postgresql://healthstack:healthstack@localhost:5432/healthstack_test
+    #     JWT_SECRET: test-secret-key
+    #     NODE_ENV: test
