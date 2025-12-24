@@ -102,3 +102,61 @@ export interface ExercisesResponse {
     totalDistance: number;
   };
 }
+
+// Sleep tracking
+export interface SleepLog {
+  id: string;
+  userId: string;
+  sleepStart: string;
+  sleepEnd: string;
+  duration: number;
+  quality: number;
+  notes?: string;
+  createdAt: string;
+}
+
+export interface CreateSleepLogInput {
+  sleepStart: string;
+  sleepEnd: string;
+  quality: number;
+  notes?: string;
+}
+
+export interface SleepLogsResponse {
+  sleepLogs: SleepLog[];
+  totals: {
+    totalLogs: number;
+    totalDuration: number;
+    averageQuality: number;
+  };
+}
+
+// Mood tracking
+export interface MoodLog {
+  id: string;
+  userId: string;
+  mood: number;
+  energy?: number;
+  stress?: number;
+  notes?: string;
+  loggedAt: string;
+  createdAt: string;
+}
+
+export interface CreateMoodLogInput {
+  mood: number;
+  energy?: number;
+  stress?: number;
+  notes?: string;
+  loggedAt?: string;
+}
+
+export interface MoodLogsResponse {
+  moodLogs: MoodLog[];
+  totals: {
+    totalLogs: number;
+    averageMood: number;
+    averageEnergy: number;
+    averageStress: number;
+  };
+}

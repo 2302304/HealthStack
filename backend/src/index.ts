@@ -7,6 +7,8 @@ import { errorHandler } from './middleware/error.middleware';
 import authRoutes from './routes/auth.routes';
 import foodRoutes from './routes/food.routes';
 import exerciseRoutes from './routes/exercise.routes';
+import sleepRoutes from './routes/sleep.routes';
+import moodRoutes from './routes/mood.routes';
 
 const app = express();
 
@@ -40,6 +42,8 @@ app.get('/health', (_req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/food-logs', foodRoutes);
 app.use('/api/exercises', exerciseRoutes);
+app.use('/api/sleep-logs', sleepRoutes);
+app.use('/api/mood-logs', moodRoutes);
 
 // 404 handler
 app.use((_req, res) => {
