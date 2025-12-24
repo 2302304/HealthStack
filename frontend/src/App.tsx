@@ -5,6 +5,8 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import FoodLogsPage from './pages/FoodLogsPage';
 import ExercisesPage from './pages/ExercisesPage';
+import SleepPage from './pages/SleepPage';
+import MoodPage from './pages/MoodPage';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, loading } = useAuth();
@@ -51,6 +53,22 @@ function App() {
             element={
               <PrivateRoute>
                 <ExercisesPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/sleep"
+            element={
+              <PrivateRoute>
+                <SleepPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mood"
+            element={
+              <PrivateRoute>
+                <MoodPage />
               </PrivateRoute>
             }
           />

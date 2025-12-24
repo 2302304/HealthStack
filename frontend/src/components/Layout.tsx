@@ -20,6 +20,8 @@ export default function Layout({ children }: LayoutProps) {
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/food-logs', label: 'Ruokapäiväkirja', icon: '🍽️' },
     { path: '/exercises', label: 'Liikunta', icon: '💪' },
+    { path: '/sleep', label: 'Uni', icon: '😴' },
+    { path: '/mood', label: 'Mieliala', icon: '😊' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
