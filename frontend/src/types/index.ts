@@ -160,3 +160,58 @@ export interface MoodLogsResponse {
     averageStress: number;
   };
 }
+
+// Meal planning
+export type DietType = 'KETO' | 'PALEO' | 'VEGAN' | 'VEGETARIAN' | 'MEDITERRANEAN' | 'BALANCED';
+
+export interface Meal {
+  id: string;
+  mealPlanId: string;
+  mealType: MealType;
+  name: string;
+  description?: string;
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
+  createdAt: string;
+}
+
+export interface MealPlan {
+  id: string;
+  userId: string;
+  date: string;
+  dietType?: DietType;
+  targetCalories?: number;
+  targetProtein?: number;
+  targetCarbs?: number;
+  targetFat?: number;
+  notes?: string;
+  meals: Meal[];
+  createdAt: string;
+}
+
+export interface CreateMealInput {
+  mealType: MealType;
+  name: string;
+  description?: string;
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
+}
+
+export interface CreateMealPlanInput {
+  date: string;
+  dietType?: DietType;
+  targetCalories?: number;
+  targetProtein?: number;
+  targetCarbs?: number;
+  targetFat?: number;
+  notes?: string;
+  meals?: CreateMealInput[];
+}
+
+export interface MealPlansResponse {
+  mealPlans: MealPlan[];
+}

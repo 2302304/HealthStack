@@ -16,6 +16,9 @@ import type {
   MoodLogsResponse,
   CreateMoodLogInput,
   MoodLog,
+  MealPlansResponse,
+  CreateMealPlanInput,
+  MealPlan,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
@@ -201,6 +204,41 @@ export const moodLogsAPI = {
 
   delete: async (id: string): Promise<{ message: string }> => {
     const { data } = await api.delete<{ message: string }>(`/mood-logs/${id}`);
+    return data;
+  },
+};
+
+// Meal Plans API
+export const mealPlansAPI = {
+  getAll: async (params?: {
+    startDate?: string;
+    endDate?: string;
+    dietType?: string;
+  }): Promise<MealPlansResponse> => {
+    const { data } = await api.get<MealPlansResponse>('/meal-plans', { params });
+    return data;
+  },
+
+  getById: async (id: string): Promise<{ mealPlan: MealPlan }> => {
+    const { data } = await api.get<{ mealPlan: MealPlan }>(`/meal-plans/${id}`);
+    return data;
+  },
+
+  create: async (input: CreateMealPlanInput): Promise<{ message: string; mealPlan: MealPlan }> => {
+    const { data } = await api.post<{ message: string; mealPlan: MealPlan }>('/meal-plans', input);
+    return data;
+  },
+
+  update: async (
+    id: string,
+    input: Partial<CreateMealPlanInput>
+  ): Promise<{ message: string; mealPlan: MealPlan }> => {
+    const { data } = await api.put<{ message: string; mealPlan: MealPlan }>(`/meal-plans/${id}`, input);
+    return data;
+  },
+
+  delete: async (id: string): Promise<{ message: string }> => {
+    const { data } = await api.delete<{ message: string }>(`/meal-plans/${id}`);
     return data;
   },
 };

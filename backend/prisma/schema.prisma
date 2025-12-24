@@ -129,51 +129,49 @@ model MoodLog {
 
 // Meal planning
 model MealPlan {
-  id          String   @id @default(uuid())
-  userId      String
-  name        String
-  description String?
-  startDate   DateTime
-  endDate     DateTime
-  dietType    DietType?
+  id             String    @id @default(uuid())
+  userId         String
+  date           DateTime  // Single day plan
+  dietType       DietType?
   targetCalories Float?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  targetProtein  Float?
+  targetCarbs    Float?
+  targetFat      Float?
+  notes          String?
+  createdAt      DateTime  @default(now())
 
   user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   meals Meal[]
 
   @@map("meal_plans")
-  @@index([userId, startDate])
+  @@index([userId, date])
 }
 
 enum DietType {
-  STANDARD
   KETO
-  LOW_CARB
-  VEGETARIAN
-  VEGAN
   PALEO
+  VEGAN
+  VEGETARIAN
+  MEDITERRANEAN
+  BALANCED
 }
 
 model Meal {
   id          String   @id @default(uuid())
   mealPlanId  String
-  name        String
   mealType    MealType
-  dayOfWeek   Int      // 1-7 (Monday-Sunday)
+  name        String
+  description String?
   calories    Float?
   protein     Float?
   carbs       Float?
   fat         Float?
-  ingredients String[] // Array of ingredient descriptions
-  instructions String?
   createdAt   DateTime @default(now())
 
   mealPlan MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
 
   @@map("meals")
-  @@index([mealPlanId, dayOfWeek])
+  @@index([mealPlanId])
 }
 
 // Shopping lists

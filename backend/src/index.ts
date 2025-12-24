@@ -9,6 +9,7 @@ import foodRoutes from './routes/food.routes';
 import exerciseRoutes from './routes/exercise.routes';
 import sleepRoutes from './routes/sleep.routes';
 import moodRoutes from './routes/mood.routes';
+import mealPlanRoutes from './routes/mealPlan.routes';
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/food-logs', foodRoutes);
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/sleep-logs', sleepRoutes);
 app.use('/api/mood-logs', moodRoutes);
+app.use('/api/meal-plans', mealPlanRoutes);
 
 // 404 handler
 app.use((_req, res) => {

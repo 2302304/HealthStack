@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import FoodLogsPage from './pages/FoodLogsPage';
+import MealPlanningPage from './pages/MealPlanningPage';
 import ExercisesPage from './pages/ExercisesPage';
 import SleepPage from './pages/SleepPage';
 import MoodPage from './pages/MoodPage';
@@ -45,6 +46,14 @@ function App() {
             element={
               <PrivateRoute>
                 <FoodLogsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/meal-planning"
+            element={
+              <PrivateRoute>
+                <MealPlanningPage />
               </PrivateRoute>
             }
           />

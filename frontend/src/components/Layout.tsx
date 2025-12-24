@@ -19,6 +19,7 @@ export default function Layout({ children }: LayoutProps) {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/food-logs', label: 'Ruokapäiväkirja', icon: '🍽️' },
+    { path: '/meal-planning', label: 'Ateriasuunnittelu', icon: '📅' },
     { path: '/exercises', label: 'Liikunta', icon: '💪' },
     { path: '/sleep', label: 'Uni', icon: '😴' },
     { path: '/mood', label: 'Mieliala', icon: '😊' },
