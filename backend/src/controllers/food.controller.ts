@@ -39,10 +39,14 @@ export const getFoodLogs = asyncHandler(async (req: Request, res: Response) => {
   if (startDate || endDate) {
     where.loggedAt = {};
     if (startDate) {
-      where.loggedAt.gte = new Date(startDate as string);
+      const start = new Date(startDate as string);
+      start.setHours(0, 0, 0, 0);
+      where.loggedAt.gte = start;
     }
     if (endDate) {
-      where.loggedAt.lte = new Date(endDate as string);
+      const end = new Date(endDate as string);
+      end.setHours(23, 59, 59, 999);
+      where.loggedAt.lte = end;
     }
   }
 

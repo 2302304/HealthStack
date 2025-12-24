@@ -30,10 +30,14 @@ export const getExercises = asyncHandler(async (req: Request, res: Response) => 
   if (startDate || endDate) {
     where.loggedAt = {};
     if (startDate) {
-      where.loggedAt.gte = new Date(startDate as string);
+      const start = new Date(startDate as string);
+      start.setHours(0, 0, 0, 0);
+      where.loggedAt.gte = start;
     }
     if (endDate) {
-      where.loggedAt.lte = new Date(endDate as string);
+      const end = new Date(endDate as string);
+      end.setHours(23, 59, 59, 999);
+      where.loggedAt.lte = end;
     }
   }
 
@@ -48,17 +52,17 @@ export const getExercises = asyncHandler(async (req: Request, res: Response) => 
 
   const totals = exercises.reduce(
     (acc, ex) => ({
-      duration: acc.duration + ex.duration,
-      calories: acc.calories + (ex.calories || 0),
-      distance: acc.distance + (ex.distance || 0),
+      totalExercises: acc.totalExercises + 1,
+      totalDuration: acc.totalDuration + ex.duration,
+      totalCalories: acc.totalCalories + (ex.calories || 0),
+      totalDistance: acc.totalDistance + (ex.distance || 0),
     }),
-    { duration: 0, calories: 0, distance: 0 }
+    { totalExercises: 0, totalDuration: 0, totalCalories: 0, totalDistance: 0 }
   );
 
   res.json({
     exercises,
     totals,
-    count: exercises.length,
   });
 });
 
