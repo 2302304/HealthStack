@@ -141,21 +141,21 @@ export default function ExercisesPage() {
           <div className="card border-2 border-purple-200 bg-purple-50">
             <p className="text-sm text-gray-600 mb-1">Harjoituksia</p>
             <p className="text-2xl font-bold text-purple-700">
-              {totals.totalExercises}
+              {totals.totalExercises || 0}
               <span className="text-sm ml-1">kpl</span>
             </p>
           </div>
           <div className="card border-2 border-blue-200 bg-blue-50">
             <p className="text-sm text-gray-600 mb-1">Kesto</p>
             <p className="text-2xl font-bold text-blue-700">
-              {Math.round(totals.totalDuration)}
+              {Math.round(totals.totalDuration || 0)}
               <span className="text-sm ml-1">min</span>
             </p>
           </div>
           <div className="card border-2 border-orange-200 bg-orange-50">
             <p className="text-sm text-gray-600 mb-1">Kalorit</p>
             <p className="text-2xl font-bold text-orange-700">
-              {Math.round(totals.totalCalories)}
+              {Math.round(totals.totalCalories || 0)}
               <span className="text-sm ml-1">kcal</span>
             </p>
           </div>
@@ -207,11 +207,11 @@ export default function ExercisesPage() {
                             <h3 className="font-medium text-gray-900">{exercise.exerciseName}</h3>
                             <div className="flex gap-4 mt-2 text-sm">
                               <span className="text-blue-600">{Math.round(exercise.duration)} min</span>
-                              {exercise.calories !== undefined && (
+                              {exercise.calories !== undefined && exercise.calories !== null && (
                                 <span className="text-orange-600">{Math.round(exercise.calories)} kcal</span>
                               )}
-                              {exercise.distance !== undefined && (
-                                <span className="text-green-600">{exercise.distance.toFixed(1)} km</span>
+                              {exercise.distance !== undefined && exercise.distance !== null && (
+                                <span className="text-green-600">{Number(exercise.distance).toFixed(1)} km</span>
                               )}
                               {exercise.intensity && (
                                 <span className="text-purple-600">
