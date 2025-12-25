@@ -239,15 +239,24 @@ curl -X POST http://localhost:3001/api/food-logs \
 - ✅ Ympäristömuuttujat .env-tiedostossa
 - ✅ SQL injection -suojaus (Prisma ORM)
 
-## Seuraavat vaiheet
+## Deployment Files
 
-- [ ] Frontend React-sovellus
-- [ ] Uni- ja mielialalokit (API on jo valmis)
-- [ ] Ateriasuunnittelu ja ostoslistat
-- [ ] Dashboard analytiikalla
-- [ ] Kaaviot ja tilastot
-- [ ] PWA-tuki
-- [ ] Tummateema
+- `Dockerfile` - Backend containerization
+- `railway.json` - Railway deployment config
+- `vercel.json` - Vercel frontend deployment config
+
+## Status
+
+✅ **Completed Features:**
+- Frontend React application with TypeScript + Vite
+- Food logging with full CRUD
+- Exercise tracking with full CRUD
+- Sleep monitoring with full CRUD
+- Mood logging with full CRUD
+- Meal planning with calendar view (day/week/month)
+- Dashboard with daily statistics
+- Full authentication system
+- Production-ready build configuration
 
 ## Lisenssi
 
