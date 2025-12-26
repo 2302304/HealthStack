@@ -24,4 +24,4 @@ Thumbs.db
 *.swo
 
 # Prisma
-prisma/migrations/
+# Keep migrations for production deployment

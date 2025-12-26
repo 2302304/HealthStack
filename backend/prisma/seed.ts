@@ -155,56 +155,53 @@ async function main() {
   const mealPlan = await prisma.mealPlan.create({
     data: {
       userId: user.id,
-      name: 'Keto-viikko',
-      description: 'Viikon keto-ruokavalio vähäisillä hiilihydraateilla',
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      date: new Date(),
       dietType: DietType.KETO,
       targetCalories: 1800,
-      meals: {
-        create: [
-          {
-            name: 'Munakkaat ja avokadoa',
-            mealType: MealType.BREAKFAST,
-            dayOfWeek: 1,
-            calories: 420,
-            protein: 24,
-            carbs: 8,
-            fat: 32,
-            ingredients: ['3 munaa', '1/2 avokadoa', 'juustoa', 'voita paistamiseen'],
-            instructions: 'Paista munakas voissa, lisää juusto. Tarjoile avokadon kanssa.',
-          },
-          {
-            name: 'Kana-caesar-salaatti (ilman krutonkeja)',
-            mealType: MealType.LUNCH,
-            dayOfWeek: 1,
-            calories: 480,
-            protein: 38,
-            carbs: 6,
-            fat: 34,
-            ingredients: ['200g kanaa', 'romainesalaattia', 'parmesaania', 'caesar-kastiketta'],
-            instructions: 'Grillaa kana, sekoita salaatin ja kastikkeen kanssa.',
-          },
-          {
-            name: 'Lohipihvi ja parsaa',
-            mealType: MealType.DINNER,
-            dayOfWeek: 1,
-            calories: 520,
-            protein: 42,
-            carbs: 8,
-            fat: 36,
-            ingredients: ['200g lohta', '150g parsaa', 'oliiviöljyä', 'sitruunaa'],
-            instructions: 'Paista lohi uunissa 180°C 15 min. Höyrytä parsa.',
-          },
-        ],
-      },
-    },
-    include: {
-      meals: true,
+      targetProtein: 120,
+      targetCarbs: 50,
+      targetFat: 140,
+      notes: 'Päivän keto-ruokavalio vähäisillä hiilihydraateilla',
     },
   });
 
-  console.log('✅ Created meal plan with meals');
+  // Create meals for the plan
+  await prisma.meal.createMany({
+    data: [
+      {
+        mealPlanId: mealPlan.id,
+        name: 'Munakkaat ja avokadoa',
+        mealType: MealType.BREAKFAST,
+        description: 'Paista munakas voissa, lisää juusto. Tarjoile avokadon kanssa.',
+        calories: 420,
+        protein: 24,
+        carbs: 8,
+        fat: 32,
+      },
+      {
+        mealPlanId: mealPlan.id,
+        name: 'Kana-caesar-salaatti',
+        mealType: MealType.LUNCH,
+        description: 'Grillaa kana, sekoita salaatin ja kastikkeen kanssa.',
+        calories: 480,
+        protein: 38,
+        carbs: 6,
+        fat: 34,
+      },
+      {
+        mealPlanId: mealPlan.id,
+        name: 'Lohipihvi ja parsaa',
+        mealType: MealType.DINNER,
+        description: 'Paista lohi uunissa 180°C 15 min. Höyrytä parsa.',
+        calories: 520,
+        protein: 42,
+        carbs: 8,
+        fat: 36,
+      },
+    ],
+  });
+
+  console.log('✅ Created meal plan with 3 meals');
 
   // Create shopping list
   const shoppingList = await prisma.shoppingList.create({
